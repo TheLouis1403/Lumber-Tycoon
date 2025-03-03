@@ -185,4 +185,11 @@ local function teleportToLocation()
     end
 end
 
-createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 100), toggleCoordinates)
+createButton("The_Auto_Farm", UDim2.new(0, 0, 0, 60), function() print("Auto Farm Ativado") end)
+createButton("Teleporte Gigatonico", UDim2.new(0, 0, 0, 100), teleportToPlayer)
+createButton("Ativar: Modo Gigatonico", UDim2.new(0, 0, 0, 140), function() print("Modo Gigatonico Ativado") end)
+createButton("Definir Velocidade", UDim2.new(0, 0, 0, 180), function() print("Velocidade Alterada") end)
+createButton("The_Pix", UDim2.new(0, 0, 0, 220), function() print("Pix Solicitado") end)
+createButton("Comprar", UDim2.new(0, 0, 0, 260), function() print("Comprado Instantaneamente") end)
+createButton("Duplicar Item", UDim2.new(0, 0, 0, 300), function() print("Item Duplicado") end)
+createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 340), toggleCoordinates)
