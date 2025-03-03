@@ -53,6 +53,7 @@ local function toggleCoordinates()
     end
 end
 
+-- Função para Teleportar para o Player
 local function teleportToPlayer()
     local teleportWindow = Instance.new("Frame")
     teleportWindow.Size = UDim2.new(0, 300, 0, 200)
@@ -104,6 +105,7 @@ local function teleportToPlayer()
     end)
 end
 
+-- Função para Teleportar para o Lugar
 local function teleportToLocation()
     local locationWindow = Instance.new("Frame")
     locationWindow.Size = UDim2.new(0, 300, 0, 250)
@@ -119,35 +121,17 @@ local function teleportToLocation()
     title.BackgroundTransparency = 1
     title.Parent = locationWindow
 
-    local placeInput = Instance.new("TextBox")
-    placeInput.Size = UDim2.new(1, 0, 0, 40)
-    placeInput.Position = UDim2.new(0, 0, 0, 50)
-    placeInput.PlaceholderText = "Lugar"
-    placeInput.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
-    placeInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-    placeInput.TextSize = 18
-    placeInput.TextXAlignment = Enum.TextXAlignment.Center
-    placeInput.Parent = locationWindow
-
-    local locations = {
-        "Venda de Madeiras",
-        "Deserto",
-        "Lago Congelado",
-        "Tree Island",
-        "Ilha de Árvores",
-        "Navio",
-        "Ponte",
-        "Loja de Ferramentas",
-        "Easter Egg 1",
-        "Easter Egg 2"
-    }
-
     local locationList = Instance.new("ScrollingFrame")
     locationList.Size = UDim2.new(1, 0, 0, 150)
     locationList.Position = UDim2.new(0, 0, 0, 100)
     locationList.BackgroundTransparency = 1
     locationList.CanvasSize = UDim2.new(0, 0, 0, 200)
     locationList.Parent = locationWindow
+
+    local locations = {
+        "Venda de Madeiras", "Deserto", "Lago Congelado", "Tree Island", "Ilha de Árvores",
+        "Navio", "Ponte", "Loja de Ferramentas", "Easter Egg 1", "Easter Egg 2"
+    }
 
     for _, location in pairs(locations) do
         local locationButton = Instance.new("TextButton")
@@ -193,3 +177,4 @@ createButton("The_Pix", UDim2.new(0, 0, 0, 220), function() print("Pix Solicitad
 createButton("Comprar", UDim2.new(0, 0, 0, 260), function() print("Comprado Instantaneamente") end)
 createButton("Duplicar Item", UDim2.new(0, 0, 0, 300), function() print("Item Duplicado") end)
 createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 340), toggleCoordinates)
+createButton("Teleportar para Lugar", UDim2.new(0, 0, 0, 380), teleportToLocation)
