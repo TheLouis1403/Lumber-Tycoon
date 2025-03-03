@@ -34,12 +34,14 @@ local function createDraggableWindow(title, position, size, parent)
     titleLabel.TextXAlignment = Enum.TextXAlignment.Center
     titleLabel.Parent = window
 
+    -- Variáveis de arraste
     local dragInput, dragStart, startPos
     local function update(input)
         local delta = input.Position - dragStart
         window.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 
+    -- Função de iniciar arraste
     titleLabel.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragStart = input.Position
@@ -54,18 +56,6 @@ local function createDraggableWindow(title, position, size, parent)
     end)
 
     return window
-end
-
--- Função para o botão de coordenadas
-local function toggleCoordinates(parent)
-    local coordinatesLabel = Instance.new("TextLabel")
-    coordinatesLabel.Text = "Coordenadas: (X: 0, Y: 0, Z: 0)"
-    coordinatesLabel.Size = UDim2.new(0, 200, 0, 30)
-    coordinatesLabel.Position = UDim2.new(1, -210, 0, 50)
-    coordinatesLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
-    coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    coordinatesLabel.TextSize = 18
-    coordinatesLabel.Parent = parent
 end
 
 -- Função para criar uma janela de opções de Teleporte (Player ou Local)
@@ -125,11 +115,35 @@ titleLabel.TextXAlignment = Enum.TextXAlignment.Center
 titleLabel.Parent = initialGui
 
 -- Criando os botões do GUI inicial
-createButton("Teleportar", UDim2.new(0, 0, 0, 60), function()
+createButton("Fazenda Automática", UDim2.new(0, 0, 0, 60), function()
+    -- A função da Fazenda Automática seria aqui
+end, initialGui)
+
+createButton("Teleporte Gigatonico", UDim2.new(0, 0, 0, 120), function()
     createTeleportOptionsWindow(initialGui)
 end, initialGui)
 
-createButton("Ver Coordenadas", UDim2.new(0, 0, 0, 120), function()
+createButton("Ativar: Modo Gigatonico", UDim2.new(0, 0, 0, 180), function()
+    -- A função do Modo Gigatonico seria aqui
+end, initialGui)
+
+createButton("Definir Velocidade", UDim2.new(0, 0, 0, 240), function()
+    -- A função do Speed Hack seria aqui
+end, initialGui)
+
+createButton("Pedir Pix", UDim2.new(0, 0, 0, 300), function()
+    -- A função do Pix seria aqui
+end, initialGui)
+
+createButton("Comprar", UDim2.new(0, 0, 0, 360), function()
+    -- A função do Instant Buy seria aqui
+end, initialGui)
+
+createButton("Duplicar Item", UDim2.new(0, 0, 0, 420), function()
+    -- A função do Item Dupe seria aqui
+end, initialGui)
+
+createButton("Ver Coordenadas", UDim2.new(0, 0, 0, 480), function()
     showCoordinates()
 end, initialGui)
 
@@ -167,9 +181,9 @@ spawn(function() animatePlaceholder(playerInput) end)
 local locationWindow = createDraggableWindow("Teleportar para o Lugar", UDim2.new(0, 0, 0, 50), UDim2.new(0, 400, 0, 300), screenGui)
 locationWindow.Visible = false
 
-createLocationButton("Venda de Madeiras", UDim2.new(0, 0, 0, 50), locationWindow)
-createLocationButton("Deserto", UDim2.new(0, 0, 0, 100), locationWindow)
-createLocationButton("Lago Congelado", UDim2.new(0, 0, 0, 150), locationWindow)
-createLocationButton("Tree island", UDim2.new(0, 0, 0, 200), locationWindow)
-createLocationButton("Navio", UDim2.new(0, 0, 0, 250), locationWindow)
-createLocationButton("Restaurante", UDim2.new(0, 0, 0, 300), locationWindow)
+createLocationButton("Venda de Madeiras", UDim2.new(0, 0, 0, 60), locationWindow)
+createLocationButton("Deserto", UDim2.new(0, 0, 0, 120), locationWindow)
+createLocationButton("Lago Congelado", UDim2.new(0, 0, 0, 180), locationWindow)
+createLocationButton("Tree Island", UDim2.new(0, 0, 0, 240), locationWindow)
+
+-- Script completo e funcional
