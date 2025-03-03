@@ -1,9 +1,9 @@
--- Criação da janela principal
+-- Criando o ScreenGui para o script
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "[ The_Script ]"
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Função para criar os botões
+-- Função para criar botões
 local function createButton(text, position, callback, parent)
     local button = Instance.new("TextButton")
     button.Text = text
@@ -15,21 +15,6 @@ local function createButton(text, position, callback, parent)
     button.Parent = parent
     button.MouseButton1Click:Connect(callback)
     return button
-end
-
--- Função de animação do texto no botão "Player..."
-local function animatePlaceholder(playerInput)
-    local textStages = {"Player.", "Player..", "Player..."}
-    local index = 1
-
-    while true do
-        playerInput.PlaceholderText = textStages[index]
-        index = index + 1
-        if index > #textStages then
-            index = 1
-        end
-        wait(1)
-    end
 end
 
 -- Função para criar uma janela arrastável
@@ -71,7 +56,19 @@ local function createDraggableWindow(title, position, size, parent)
     return window
 end
 
--- Função para exibir a janela de opções de Teleporte (Player ou Local)
+-- Função para o botão de coordenadas
+local function toggleCoordinates(parent)
+    local coordinatesLabel = Instance.new("TextLabel")
+    coordinatesLabel.Text = "Coordenadas: (X: 0, Y: 0, Z: 0)"
+    coordinatesLabel.Size = UDim2.new(0, 200, 0, 30)
+    coordinatesLabel.Position = UDim2.new(1, -210, 0, 50)
+    coordinatesLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
+    coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    coordinatesLabel.TextSize = 18
+    coordinatesLabel.Parent = parent
+end
+
+-- Função para criar uma janela de opções de Teleporte (Player ou Local)
 local function createTeleportOptionsWindow(parent)
     local teleportOptionsWindow = createDraggableWindow("Teleportar para...", UDim2.new(0, 0, 0, 50), UDim2.new(0, 400, 0, 150), parent)
 
@@ -86,19 +83,7 @@ local function createTeleportOptionsWindow(parent)
     end, parent)
 end
 
--- Função para o botão de coordenadas
-local function toggleCoordinates(parent)
-    local coordinatesLabel = Instance.new("TextLabel")
-    coordinatesLabel.Text = "Coordenadas: (X: 0, Y: 0, Z: 0)"
-    coordinatesLabel.Size = UDim2.new(0, 200, 0, 30)
-    coordinatesLabel.Position = UDim2.new(1, -210, 0, 50)
-    coordinatesLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
-    coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    coordinatesLabel.TextSize = 18
-    coordinatesLabel.Parent = parent
-end
-
--- Função para adicionar janelas de localização "Lugar"
+-- Função para mostrar os botões de locais
 local function createLocationButton(text, position, parent)
     local locationButton = Instance.new("TextButton")
     locationButton.Text = text
@@ -110,19 +95,17 @@ local function createLocationButton(text, position, parent)
     locationButton.Parent = parent
 end
 
--- Função para o botão "Player..."
-local function animatePlaceholder(playerInput)
-    local textStages = {"Player.", "Player..", "Player..."}
-    local index = 1
-
-    while true do
-        playerInput.PlaceholderText = textStages[index]
-        index = index + 1
-        if index > #textStages then
-            index = 1
-        end
-        wait(1)
-    end
+-- Função para mostrar o botão de coordenadas
+local function showCoordinates()
+    local player = game.Players.LocalPlayer
+    local coordinatesLabel = Instance.new("TextLabel")
+    coordinatesLabel.Text = "Coordenadas: (X: 0, Y: 0, Z: 0)"
+    coordinatesLabel.Size = UDim2.new(0, 200, 0, 30)
+    coordinatesLabel.Position = UDim2.new(1, -210, 0, 50)
+    coordinatesLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
+    coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    coordinatesLabel.TextSize = 18
+    coordinatesLabel.Parent = screenGui
 end
 
 -- Criando o GUI inicial com título
@@ -141,14 +124,29 @@ titleLabel.TextSize = 24
 titleLabel.TextXAlignment = Enum.TextXAlignment.Center
 titleLabel.Parent = initialGui
 
--- Função para mostrar o GUI inicial após o clique do botão
+-- Criando os botões do GUI inicial
 createButton("Teleportar", UDim2.new(0, 0, 0, 60), function()
     createTeleportOptionsWindow(initialGui)
 end, initialGui)
 
-createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 120), function()
-    toggleCoordinates(initialGui)
+createButton("Ver Coordenadas", UDim2.new(0, 0, 0, 120), function()
+    showCoordinates()
 end, initialGui)
+
+-- Função para o botão "Player..."
+local function animatePlaceholder(playerInput)
+    local textStages = {"Player.", "Player..", "Player..."}
+    local index = 1
+
+    while true do
+        playerInput.PlaceholderText = textStages[index]
+        index = index + 1
+        if index > #textStages then
+            index = 1
+        end
+        wait(1)
+    end
+end
 
 -- Criando a janela "Teleportar para o Player"
 local teleportWindow = createDraggableWindow("Teleportar para o Player:", UDim2.new(0, 0, 0, 50), UDim2.new(0, 400, 0, 200), screenGui)
@@ -166,7 +164,7 @@ playerInput.Parent = teleportWindow
 spawn(function() animatePlaceholder(playerInput) end)
 
 -- Criando a janela para selecionar lugares
-local locationWindow = createDraggableWindow("Teleportar para o Lugar", UDim2.new(0, 0, 0, 250), UDim2.new(0, 400, 0, 300), screenGui)
+local locationWindow = createDraggableWindow("Teleportar para o Lugar", UDim2.new(0, 0, 0, 50), UDim2.new(0, 400, 0, 300), screenGui)
 locationWindow.Visible = false
 
 createLocationButton("Venda de Madeiras", UDim2.new(0, 0, 0, 50), locationWindow)
