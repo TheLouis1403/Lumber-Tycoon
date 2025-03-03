@@ -110,16 +110,19 @@ local function createLocationButton(text, position, parent)
     locationButton.Parent = parent
 end
 
--- Função para o botão de coordenadas
-local function showCoordinates(parent)
-    local coordinatesLabel = Instance.new("TextLabel")
-    coordinatesLabel.Text = "Coordenadas: (X: 0, Y: 0, Z: 0)"
-    coordinatesLabel.Size = UDim2.new(0, 200, 0, 30)
-    coordinatesLabel.Position = UDim2.new(1, -210, 0, 50)
-    coordinatesLabel.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
-    coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    coordinatesLabel.TextSize = 18
-    coordinatesLabel.Parent = parent
+-- Função para o botão "Player..."
+local function animatePlaceholder(playerInput)
+    local textStages = {"Player.", "Player..", "Player..."}
+    local index = 1
+
+    while true do
+        playerInput.PlaceholderText = textStages[index]
+        index = index + 1
+        if index > #textStages then
+            index = 1
+        end
+        wait(1)
+    end
 end
 
 -- Criando o GUI inicial com título
@@ -144,26 +147,12 @@ createButton("Teleportar", UDim2.new(0, 0, 0, 60), function()
 end, initialGui)
 
 createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 120), function()
-    showCoordinates(initialGui)
+    toggleCoordinates(initialGui)
 end, initialGui)
-
--- Função para o botão "Player..."
-local function animatePlaceholder(playerInput)
-    local textStages = {"Player.", "Player..", "Player..."}
-    local index = 1
-
-    while true do
-        playerInput.PlaceholderText = textStages[index]
-        index = index + 1
-        if index > #textStages then
-            index = 1
-        end
-        wait(1)
-    end
-end
 
 -- Criando a janela "Teleportar para o Player"
 local teleportWindow = createDraggableWindow("Teleportar para o Player:", UDim2.new(0, 0, 0, 50), UDim2.new(0, 400, 0, 200), screenGui)
+teleportWindow.Visible = false
 
 local playerInput = Instance.new("TextBox")
 playerInput.Size = UDim2.new(1, 0, 0, 40)
@@ -178,6 +167,7 @@ spawn(function() animatePlaceholder(playerInput) end)
 
 -- Criando a janela para selecionar lugares
 local locationWindow = createDraggableWindow("Teleportar para o Lugar", UDim2.new(0, 0, 0, 250), UDim2.new(0, 400, 0, 300), screenGui)
+locationWindow.Visible = false
 
 createLocationButton("Venda de Madeiras", UDim2.new(0, 0, 0, 50), locationWindow)
 createLocationButton("Deserto", UDim2.new(0, 0, 0, 100), locationWindow)
