@@ -1,7 +1,3 @@
--- Script GUI para Lumber Tycoon 2 (com funções do Butter Hub e adicionais)
--- Compatível com JJSPloit
-
--- Criando o GUI
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = player:WaitForChild("PlayerGui")
@@ -9,7 +5,7 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 400, 0, 600)
 mainFrame.Position = UDim2.new(0, 50, 0, 50)
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BackgroundColor3 = Color3.fromRGB(60, 0, 60)
 mainFrame.Parent = screenGui
 
 local title = Instance.new("TextLabel")
@@ -20,13 +16,12 @@ title.TextSize = 24
 title.BackgroundTransparency = 1
 title.Parent = mainFrame
 
--- Função para criar botões facilmente
 local function createButton(name, position, func)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(1, 0, 0, 40)
     button.Position = position
     button.Text = name
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    button.BackgroundColor3 = Color3.fromRGB(80, 0, 80)
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
     button.TextSize = 18
     button.Parent = mainFrame
@@ -34,83 +29,160 @@ local function createButton(name, position, func)
     return button
 end
 
--- Funções para as ações do hub
-local function autoFarm()
-    -- Exemplo de implementação para farm automático
-    print("Iniciando Auto Farm")
-    -- Adicionar lógica de farm automático aqui
+local coordinatesLabel = Instance.new("TextLabel")
+coordinatesLabel.Size = UDim2.new(0, 200, 0, 40)
+coordinatesLabel.Position = UDim2.new(0, 450, 0, 50)
+coordinatesLabel.Text = "Coordenadas: X: 0, Y: 0, Z: 0"
+coordinatesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+coordinatesLabel.TextSize = 18
+coordinatesLabel.BackgroundTransparency = 1
+coordinatesLabel.Visible = false
+coordinatesLabel.Parent = screenGui
+
+local function updateCoordinates()
+    local position = player.Character and player.Character.PrimaryPart and player.Character.PrimaryPart.Position
+    if position then
+        coordinatesLabel.Text = string.format("Coordenadas: X: %.2f, Y: %.2f, Z: %.2f", position.X, position.Y, position.Z)
+    end
+end
+
+local function toggleCoordinates()
+    coordinatesLabel.Visible = not coordinatesLabel.Visible
+    if coordinatesLabel.Visible then
+        updateCoordinates()
+    end
 end
 
 local function teleportToPlayer()
-    -- Exemplo de teleporte para um player
-    local targetPlayer = game.Players:FindFirstChild("NomeDoJogador") -- Substitua pelo nome do jogador desejado
-    if targetPlayer then
-        player.Character:SetPrimaryPartCFrame(targetPlayer.Character.PrimaryPart.CFrame)
-    end
-end
+    local teleportWindow = Instance.new("Frame")
+    teleportWindow.Size = UDim2.new(0, 300, 0, 200)
+    teleportWindow.Position = UDim2.new(0.5, -150, 0.5, -100)
+    teleportWindow.BackgroundColor3 = Color3.fromRGB(60, 0, 60)
+    teleportWindow.Parent = screenGui
 
-local function godMode()
-    -- Ativando o God Mode
-    player.Character:FindFirstChild("Humanoid").Health = math.huge
-end
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 40)
+    title.Text = "Teleportar para o Player:"
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextSize = 24
+    title.BackgroundTransparency = 1
+    title.Parent = teleportWindow
 
-local function speedHack()
-    -- Aumentando a velocidade do jogador
-    player.Character.Humanoid.WalkSpeed = 100
-end
+    local playerInput = Instance.new("TextBox")
+    playerInput.Size = UDim2.new(1, 0, 0, 40)
+    playerInput.Position = UDim2.new(0, 0, 0, 50)
+    playerInput.PlaceholderText = "Player"
+    playerInput.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
+    playerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    playerInput.TextSize = 18
+    playerInput.TextXAlignment = Enum.TextXAlignment.Center
+    playerInput.Parent = teleportWindow
 
-local function infiniteMoney()
-    -- Dando dinheiro infinito (simulação)
-    -- Adicionar lógica para ganhar dinheiro aqui
-    print("Dinheiro infinito ativado!")
-end
-
-local function removeFog()
-    -- Remover a neblina do jogo
-    game.Lighting.FogEnd = math.huge
-    game.Lighting.FogStart = 0
-end
-
-local function fly()
-    -- Habilitando o voo (exemplo simples)
-    local bodyVelocity = Instance.new("BodyVelocity")
-    bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
-    bodyVelocity.Velocity = Vector3.new(0, 50, 0) -- Controle de velocidade de voo
-    bodyVelocity.Parent = player.Character:FindFirstChild("HumanoidRootPart")
-end
-
-local function noclip()
-    -- Ativando Noclip
-    local char = player.Character
-    local humanoid = char:FindFirstChildOfClass("Humanoid")
-    humanoid.PlatformStand = true
-    for _, part in pairs(char:GetChildren()) do
-        if part:IsA("BasePart") then
-            part.CanCollide = false
+    playerInput.FocusLost:Connect(function()
+        if playerInput.Text == "" then
+            playerInput.PlaceholderText = "Player"
         end
+    end)
+
+    local teleportButton = Instance.new("TextButton")
+    teleportButton.Size = UDim2.new(1, 0, 0, 40)
+    teleportButton.Position = UDim2.new(0, 0, 0, 100)
+    teleportButton.Text = "Teleportar"
+    teleportButton.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
+    teleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    teleportButton.TextSize = 18
+    teleportButton.Parent = teleportWindow
+    teleportButton.MouseButton1Click:Connect(function()
+        local targetPlayerName = playerInput.Text
+        local targetPlayer = game.Players:FindFirstChild(targetPlayerName)
+        if targetPlayer then
+            player.Character:SetPrimaryPartCFrame(targetPlayer.Character.PrimaryPart.CFrame)
+        else
+            print("Jogador não encontrado.")
+        end
+        teleportWindow:Destroy()
+    end)
+end
+
+local function teleportToLocation()
+    local locationWindow = Instance.new("Frame")
+    locationWindow.Size = UDim2.new(0, 300, 0, 250)
+    locationWindow.Position = UDim2.new(0.5, -150, 0.5, -125)
+    locationWindow.BackgroundColor3 = Color3.fromRGB(60, 0, 60)
+    locationWindow.Parent = screenGui
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 40)
+    title.Text = "Teleportar para o Lugar:"
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextSize = 24
+    title.BackgroundTransparency = 1
+    title.Parent = locationWindow
+
+    local placeInput = Instance.new("TextBox")
+    placeInput.Size = UDim2.new(1, 0, 0, 40)
+    placeInput.Position = UDim2.new(0, 0, 0, 50)
+    placeInput.PlaceholderText = "Lugar"
+    placeInput.BackgroundColor3 = Color3.fromRGB(90, 0, 90)
+    placeInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    placeInput.TextSize = 18
+    placeInput.TextXAlignment = Enum.TextXAlignment.Center
+    placeInput.Parent = locationWindow
+
+    local locations = {
+        "Venda de Madeiras",
+        "Deserto",
+        "Lago Congelado",
+        "Tree Island",
+        "Ilha de Árvores",
+        "Navio",
+        "Ponte",
+        "Loja de Ferramentas",
+        "Easter Egg 1",
+        "Easter Egg 2"
+    }
+
+    local locationList = Instance.new("ScrollingFrame")
+    locationList.Size = UDim2.new(1, 0, 0, 150)
+    locationList.Position = UDim2.new(0, 0, 0, 100)
+    locationList.BackgroundTransparency = 1
+    locationList.CanvasSize = UDim2.new(0, 0, 0, 200)
+    locationList.Parent = locationWindow
+
+    for _, location in pairs(locations) do
+        local locationButton = Instance.new("TextButton")
+        locationButton.Size = UDim2.new(1, 0, 0, 40)
+        locationButton.Text = location
+        locationButton.BackgroundColor3 = Color3.fromRGB(100, 0, 100)
+        locationButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        locationButton.TextSize = 18
+        locationButton.Parent = locationList
+
+        locationButton.MouseButton1Click:Connect(function()
+            if location == "Venda de Madeiras" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(100, 0, 100))
+            elseif location == "Deserto" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(200, 0, 200))
+            elseif location == "Lago Congelado" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(300, 0, 300))
+            elseif location == "Tree Island" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(400, 0, 400))
+            elseif location == "Ilha de Árvores" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(500, 0, 500))
+            elseif location == "Navio" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(600, 0, 600))
+            elseif location == "Ponte" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(700, 0, 700))
+            elseif location == "Loja de Ferramentas" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(800, 0, 800))
+            elseif location == "Easter Egg 1" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(900, 0, 900))
+            elseif location == "Easter Egg 2" then
+                player.Character:SetPrimaryPartCFrame(CFrame.new(1000, 0, 1000))
+            end
+            locationWindow:Destroy()
+        end)
     end
 end
 
-local function instantBuy()
-    -- Compra instantânea (simulação)
-    print("Compra instantânea ativada!")
-    -- Adicionar lógica de compra aqui
-end
-
-local function itemDupe()
-    -- Dupe de item (simulação)
-    print("Duplicando item...")
-    -- Adicionar lógica de duplicação de item aqui
-end
-
--- Criando botões no GUI
-createButton("Auto Farm", UDim2.new(0, 0, 0, 50), autoFarm)
-createButton("Teleport to Player", UDim2.new(0, 0, 0, 100), teleportToPlayer)
-createButton("God Mode", UDim2.new(0, 0, 0, 150), godMode)
-createButton("Speed Hack", UDim2.new(0, 0, 0, 200), speedHack)
-createButton("Infinite Money", UDim2.new(0, 0, 0, 250), infiniteMoney)
-createButton("Remove Fog", UDim2.new(0, 0, 0, 300), removeFog)
-createButton("Fly", UDim2.new(0, 0, 0, 350), fly)
-createButton("Noclip", UDim2.new(0, 0, 0, 400), noclip)
-createButton("Instant Buy", UDim2.new(0, 0, 0, 450), instantBuy)
-createButton("Item Dupe", UDim2.new(0, 0, 0, 500), itemDupe)
+createButton("Ver Cordenadas", UDim2.new(0, 0, 0, 100), toggleCoordinates)
