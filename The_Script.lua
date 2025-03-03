@@ -10,7 +10,7 @@ mainFrame.Parent = screenGui
 
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
-title.Text = "Lumber Tycoon 2 Hub"
+title.Text = "[ The_Script ]"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.TextSize = 24
 title.BackgroundTransparency = 1
